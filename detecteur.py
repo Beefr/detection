@@ -35,14 +35,13 @@ class Detecteur(object):
 
     def start_detecting(self, frame_skip):
         
-        #while True:
-        self._count+=1
-        if self._count==frame_skip:
-            _, frame = self._camera.read()
-            self.detect_object(frame)
-            self._count=0
+        while True:
+            self._count+=1
+            if self._count==frame_skip:
+                _, frame = self._camera.read()
+                self.detect_object(frame)
+                self._count=0
         
-        self._thread.start()
 
     def detect_object(self, frame):
         frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
