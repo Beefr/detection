@@ -23,20 +23,26 @@ class Detecteur(object):
         
 
         self.load_cascade_classifier(path)
+
+        
+        self._count=0
         self._thread.start()
 
 
-    def start_detecting(self, frame_skip):
-        
-        count=0
-        while True:
-            count+=1
-            if count==frame_skip:
-                _, frame = self._camera.read()
-                self.detect_object(frame)
-                count=0
+    def __del__(self):
         self._camera.release()
         cv.destroyAllWindows()
+
+    def start_detecting(self, frame_skip):
+        
+        #while True:
+        self._count+=1
+        if self._count==frame_skip:
+            _, frame = self._camera.read()
+            self.detect_object(frame)
+            self._count=0
+        
+        self._thread.start()
 
     def detect_object(self, frame):
         frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
