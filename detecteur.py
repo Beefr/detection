@@ -16,9 +16,10 @@ class Detecteur(object):
 
     def start_detecting(self, frame_skip):
         self._camera = VideoCapture(0)
-        if not self._camera.isOpened:
-            print('--(!)Error opening video capture')
-            exit(0)
+
+        while not self._vid.isOpened():
+            pass # attente de l'ouverture de la caméra
+        
         count=0
         while True:
             count+=1
