@@ -1,4 +1,5 @@
 
+import threading
 #from cv2 import cvtColor, equalizeHist, COLOR_BGR2GRAY, VideoCapture,CascadeClassifier, imshow, ellipse, waitKey, destroyAllWindows
 import cv2 as cv
 
@@ -11,16 +12,21 @@ class Detecteur(object):
         self._camera=None
         self._frame_skip=frame_skip
         self._sound=Sound()
-
-        self.load_cascade_classifier(path)
-        self.start_detecting(self._frame_skip)
-
-
-    def start_detecting(self, frame_skip):
+        
         self._camera = cv.VideoCapture(0)
 
         while not self._camera.isOpened():
             pass # attente de l'ouverture de la caméra
+
+        self._thread = threading.Thread(target=self.start_detecting, args=(self._frame_skip,))
+
+        
+
+        self.load_cascade_classifier(path)
+        self._thread.start()
+
+
+    def start_detecting(self, frame_skip):
         
         count=0
         while True:
