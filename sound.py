@@ -4,11 +4,11 @@ import pysine
 class Sound(object):
 
     def __init__(self):
-        frequency = 30000
+        self._frequency = 30000
 
-        duration = 3
+        self._duration = 3
 
 
     def play(self):
-        pysine.sine(frequency, duration)
+        pysine.sine(self._frequency, self._duration)
 
