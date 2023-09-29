@@ -2,6 +2,7 @@
 import threading
 #from cv2 import cvtColor, equalizeHist, COLOR_BGR2GRAY, VideoCapture,CascadeClassifier, imshow, ellipse, waitKey, destroyAllWindows
 import cv2 as cv
+import time
 
 from sound import Sound
 
@@ -36,11 +37,12 @@ class Detecteur(object):
     def start_detecting(self, frame_skip):
         
         while True:
-            self._count+=1
-            if self._count==frame_skip:
-                _, frame = self._camera.read()
-                self.detect_object(frame)
-                self._count=0
+            #self._count+=1
+            #if self._count==frame_skip:
+            time.sleep(frame_skip)
+            _, frame = self._camera.read()
+            self.detect_object(frame)
+                #self._count=0
         
 
     def detect_object(self, frame):
