@@ -1,5 +1,7 @@
 
-from cv2 import cvtColor, equalizeHist, COLOR_BGR2GRAY, VideoCapture,CascadeClassifier, imshow, ellipse, waitKey, destroyAllWindows
+#from cv2 import cvtColor, equalizeHist, COLOR_BGR2GRAY, VideoCapture,CascadeClassifier, imshow, ellipse, waitKey, destroyAllWindows
+import cv2 as cv
+
 from sound import Sound
 
 class Detecteur(object):
@@ -15,7 +17,7 @@ class Detecteur(object):
 
 
     def start_detecting(self, frame_skip):
-        self._camera = VideoCapture(0)
+        self._camera = cv.VideoCapture(0)
 
         while not self._camera.isOpened():
             pass # attente de l'ouverture de la caméra
@@ -28,11 +30,11 @@ class Detecteur(object):
                 self.detect_object(frame)
                 count=0
         self._camera.release()
-        destroyAllWindows()
+        cv.destroyAllWindows()
 
     def detect_object(self, frame):
-        frame_gray = cvtColor(frame, COLOR_BGR2GRAY)
-        frame_gray = equalizeHist(frame_gray)
+        frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        frame_gray = cv.equalizeHist(frame_gray)
         #-- Detect object
         obj = self._model.detectMultiScale(frame_gray)
         if len(obj)>=1:
@@ -44,14 +46,14 @@ class Detecteur(object):
     def show(self, frame, obj):
         for (x,y,w,h) in obj:
             center = (x + w//2, y + h//2)
-            frame = ellipse(frame, center, (w//2, h//2), 0, 0, 360, (255, 0, 255), 4)
+            frame = cv.ellipse(frame, center, (w//2, h//2), 0, 0, 360, (255, 0, 255), 4)
 
-        imshow('Detection', frame)
-        waitKey(1)
+        cv.imshow('Detection', frame)
+        cv.waitKey(1)
         
 
     #-- 1. Load the cascade classifier
     def load_cascade_classifier(self, path):
-        self._model = CascadeClassifier(path)
+        self._model = cv.CascadeClassifier(path)
 
     
